@@ -20,6 +20,7 @@
         android:visibility="gone" />
 
     <LinearLayout
+        android:id="@+id/login_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -95,5 +96,7 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
     </ScrollView>
+
 </LinearLayout>
