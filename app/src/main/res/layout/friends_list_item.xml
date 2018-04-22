@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:padding="@dimen/friends_list_item_padding">
+    <!-- TODO -->
+    <ImageView
+        android:id="@+id/friend_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/friend_name_text"
+        app:layout_constraintTop_toTopOf="@id/friend_name_text"
+        android:contentDescription="@string/friend_icon"
+        android:src="@drawable/ic_account_circle_black_24dp" />
+    <TextView
+        android:id="@+id/friend_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_friend_name"
+        app:layout_constraintStart_toEndOf="@id/friend_icon"/>
+    <ImageButton
+        android:id="@+id/options_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/menu_icon"
+        android:src="@drawable/ic_menu_black_24dp" />
+</android.support.constraint.ConstraintLayout>
