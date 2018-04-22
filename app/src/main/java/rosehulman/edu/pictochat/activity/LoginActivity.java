@@ -1,4 +1,4 @@
-package rosehulman.edu.pictochat;
+package rosehulman.edu.pictochat.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -32,6 +32,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rosehulman.edu.pictochat.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 

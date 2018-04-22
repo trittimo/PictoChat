@@ -1,11 +1,13 @@
-package rosehulman.edu.pictochat;
+package rosehulman.edu.pictochat.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import rosehulman.edu.pictochat.R;
+import rosehulman.edu.pictochat.activity.MainActivity;
 
 public class FriendsFragment extends Fragment {
 
