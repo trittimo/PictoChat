@@ -13,9 +13,9 @@ public class FriendsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_friends, container, false);
-        TextView textView = (TextView) rootView.findViewById(R.id.friends_label);
+//        TextView textView = (TextView) rootView.findViewById(R.id.friends_label);
 //        textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-        textView.setText("This is the friends fragment view");
+//        textView.setText("This is the friends fragment view");
         return rootView;
     }
 
