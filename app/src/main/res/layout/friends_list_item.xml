@@ -5,25 +5,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:padding="@dimen/friends_list_item_padding">
-    <!-- TODO -->
-    <ImageView
-        android:id="@+id/friend_icon"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/friend_name_text"
-        app:layout_constraintTop_toTopOf="@id/friend_name_text"
-        android:contentDescription="@string/friend_icon"
-        android:src="@drawable/ic_account_circle_black_24dp" />
-    <TextView
-        android:id="@+id/friend_name_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/default_friend_name"
-        app:layout_constraintStart_toEndOf="@id/friend_icon"/>
-    <ImageButton
-        android:id="@+id/options_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/menu_icon"
-        android:src="@drawable/ic_menu_black_24dp" />
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/friend_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/friend_icon"
+            android:src="@drawable/ic_account_circle_black_24dp" />
+        <TextView
+            android:id="@+id/friend_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/default_friend_name"
+            android:layout_toEndOf="@+id/friend_icon"
+            android:textSize="@dimen/friend_name_text_size"
+            android:layout_margin="@dimen/friend_name_text_margin"
+            android:paddingStart="@dimen/friend_name_text_horizontal_margin"
+            android:paddingEnd="@dimen/friend_name_text_horizontal_margin"
+            android:layout_toStartOf="@+id/options_icon"/>
+        <ImageButton
+            android:id="@+id/options_icon"
+            android:layout_width="@dimen/friends_list_item_icon_size"
+            android:layout_height="@dimen/friends_list_item_icon_size"
+            android:contentDescription="@string/menu_icon"
+            android:src="@drawable/ic_menu_black_24dp"
+            android:layout_toStartOf="@+id/create_icon"/>
+        <ImageButton
+            android:id="@+id/create_icon"
+            android:layout_width="@dimen/friends_list_item_icon_size"
+            android:layout_height="@dimen/friends_list_item_icon_size"
+            android:contentDescription="@string/write_icon"
+            android:src="@drawable/ic_create_black_24dp"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>
