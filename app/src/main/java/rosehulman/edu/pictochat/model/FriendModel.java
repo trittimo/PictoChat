@@ -1,14 +1,14 @@
 package rosehulman.edu.pictochat.model;
-public class FriendListItemModel {
+public class FriendModel {
     private String name;
     private String email;
 
-    public FriendListItemModel() {
+    public FriendModel() {
         this.name = "John Doe";
         this.email = "default@gmail.com";
     }
 
-    public FriendListItemModel(String name, String email) {
+    public FriendModel(String name, String email) {
         this.name = name;
         this.email = email;
     }

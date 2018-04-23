@@ -29,4 +29,9 @@
     <string name="add_friend_button_text">Add Friend</string>
     <string name="messages_image_description">Messages</string>
     <string name="default_messages_text">1</string>
+    <string name="rooms_filter_hint">Filter Rooms</string>
+    <string name="add_room_button_text">Add Room</string>
+    <string name="default_room_name">Sample Room</string>
+    <string name="remove_room">Remove Room</string>
+    <string name="edit_room">Edit Room</string>
 </resources>

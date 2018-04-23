@@ -6,7 +6,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -16,17 +15,17 @@ import java.util.ArrayList;
 import java.util.function.Predicate;
 
 import rosehulman.edu.pictochat.R;
-import rosehulman.edu.pictochat.model.FriendListItemModel;
+import rosehulman.edu.pictochat.model.FriendModel;
 
 public class FriendAdapter extends BaseAdapter {
     private Context context;
-    private ArrayList<FriendListItemModel> friends = new ArrayList<>();
+    private ArrayList<FriendModel> friends = new ArrayList<>();
     private String filter;
 
     public FriendAdapter(Context context) {
         this.context = context;
         for (int i = 0; i < 5; i++) {
-            friends.add(new FriendListItemModel("John Doe " + i, "default@gmail.com"));
+            friends.add(new FriendModel("John Doe " + i, "default@gmail.com"));
         }
     }
 
@@ -35,10 +34,10 @@ public class FriendAdapter extends BaseAdapter {
         if (filter == null) {
             return friends.size();
         }
-        ArrayList<FriendListItemModel> copy = new ArrayList<>(friends);
-        copy.removeIf(new Predicate<FriendListItemModel>() {
+        ArrayList<FriendModel> copy = new ArrayList<>(friends);
+        copy.removeIf(new Predicate<FriendModel>() {
             @Override
-            public boolean test(FriendListItemModel s) {
+            public boolean test(FriendModel s) {
                 return !s.getName().toLowerCase().contains(filter) && !s.getEmail().toLowerCase().contains(filter);
             }
         });
@@ -46,14 +45,14 @@ public class FriendAdapter extends BaseAdapter {
     }
 
     @Override
-    public FriendListItemModel getItem(int position) {
+    public FriendModel getItem(int position) {
         if (filter == null) {
             return friends.get(position);
         }
-        ArrayList<FriendListItemModel> copy = new ArrayList<>(friends);
-        copy.removeIf(new Predicate<FriendListItemModel>() {
+        ArrayList<FriendModel> copy = new ArrayList<>(friends);
+        copy.removeIf(new Predicate<FriendModel>() {
             @Override
-            public boolean test(FriendListItemModel s) {
+            public boolean test(FriendModel s) {
                 return !s.getName().toLowerCase().contains(filter) && !s.getEmail().toLowerCase().contains(filter);
             }
         });
@@ -72,7 +71,7 @@ public class FriendAdapter extends BaseAdapter {
             view = LayoutInflater.from(context).inflate(R.layout.friends_list_item, parent, false);
         }
 
-        FriendListItemModel friend = getItem(position);
+        FriendModel friend = getItem(position);
         TextView friendNameTextView = view.findViewById(R.id.friend_name_text);
         friendNameTextView.setText(friend.getName());
 
@@ -104,6 +103,7 @@ public class FriendAdapter extends BaseAdapter {
     public void setFilter(String filter) {
         if (filter.isEmpty()) {
             this.filter = null;
+            notifyDataSetChanged();
             return;
         }
         this.filter = filter.toLowerCase();

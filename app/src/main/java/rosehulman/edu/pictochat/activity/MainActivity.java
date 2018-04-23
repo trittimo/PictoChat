@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 mMessageCountTextView.setText(random.nextInt(10) + "");
             }
         });
+
         return super.onCreateOptionsMenu(menu);
     }
 
