@@ -1,5 +1,6 @@
 package rosehulman.edu.pictochat.activity;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -80,6 +81,14 @@ public class MainActivity extends AppCompatActivity {
                 // TODO
                 Random random = new Random();
                 mMessageCountTextView.setText(random.nextInt(10) + "");
+            }
+        });
+
+        menu.findItem(R.id.action_settings).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                return true;
             }
         });
 
