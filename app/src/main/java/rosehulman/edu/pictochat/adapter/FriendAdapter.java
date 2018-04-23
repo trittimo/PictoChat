@@ -18,7 +18,7 @@ public class FriendAdapter extends BaseAdapter {
 
     public FriendAdapter(Context context) {
         this.context = context;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 50; i++) {
             friends.add(new FriendListItemModel());
         }
     }

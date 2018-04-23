@@ -1,37 +1,30 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/search_edit_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="rosehulman.edu.pictochat.fragment.FriendsFragment">
+    tools:context="rosehulman.edu.pictochat.fragment.FriendsFragment"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <android.support.v7.widget.SearchView
+        android:id="@+id/friends_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <android.support.v7.widget.SearchView
-                android:id="@+id/friends_filter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:queryHint="@string/friends_filter_hint"
-                app:iconifiedByDefault="false" />
+        app:queryHint="@string/friends_filter_hint"
+        app:iconifiedByDefault="false" />
 
-            <ListView
-                android:id="@+id/friends_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <Button
-            android:id="@+id/add_friend_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/add_friend_button_text"
-            android:layout_alignParentBottom="true"/>
-    </RelativeLayout>
+    <ListView
+        android:id="@+id/friends_list"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/friends_list_height" />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/add_friend_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_friend_button_text"
+        android:layout_alignParentBottom="true" />
+
+
+</LinearLayout>
