@@ -2,10 +2,15 @@ package rosehulman.edu.pictochat.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -18,8 +23,8 @@ public class FriendAdapter extends BaseAdapter {
 
     public FriendAdapter(Context context) {
         this.context = context;
-        for (int i = 0; i < 50; i++) {
-            friends.add(new FriendListItemModel());
+        for (int i = 0; i < 5; i++) {
+            friends.add(new FriendListItemModel("John Doe " + i, "default@gmail.com"));
         }
     }
 
@@ -39,7 +44,7 @@ public class FriendAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.friends_list_item, parent, false);
@@ -48,6 +53,29 @@ public class FriendAdapter extends BaseAdapter {
         FriendListItemModel friend = friends.get(position);
         TextView friendNameTextView = view.findViewById(R.id.friend_name_text);
         friendNameTextView.setText(friend.getName());
+
+        final ImageButton addFriendButton = view.findViewById(R.id.options_button);
+        addFriendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(FriendAdapter.this.context, addFriendButton);
+                menu.getMenuInflater().inflate(R.menu.friend_option_menu, menu.getMenu());
+
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Toast.makeText(FriendAdapter.this.context, "Removed friend", Toast.LENGTH_SHORT).show();
+                        friends.remove(position);
+                        FriendAdapter.this.notifyDataSetChanged();
+
+                        // TODO: Actually remove the friend
+                        return true;
+                    }
+                });
+
+                menu.show();
+            }
+        });
         return view;
     }
 }
