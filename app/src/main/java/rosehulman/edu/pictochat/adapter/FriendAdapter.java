@@ -109,4 +109,9 @@ public class FriendAdapter extends BaseAdapter {
         this.filter = filter.toLowerCase();
         notifyDataSetChanged();
     }
+
+    public void addFriend(FriendModel friend) {
+        friends.add(friend);
+        notifyDataSetChanged();
+    }
 }
