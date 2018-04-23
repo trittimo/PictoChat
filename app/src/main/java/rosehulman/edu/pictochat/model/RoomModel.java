@@ -1,33 +1,18 @@
 package rosehulman.edu.pictochat.model;
 
-import java.util.ArrayList;
+/**
+ * Created by dongmj on 4/22/2018.
+ */
 
 public class RoomModel {
-    private String name;
-    private ArrayList<FriendModel> members;
-    public RoomModel() {
-        this.name = "Default Name";
-        this.members = new ArrayList<>();
-        members.add(new FriendModel());
-    }
 
-    public String getName() {
-        return name;
-    }
+    String name;
 
-    public void setName(String name) {
+    public RoomModel(String name){
         this.name = name;
     }
 
-    public int getMemberCount() {
-        return members.size();
-    }
-
-    public void addMember(FriendModel member) {
-        members.add(member);
-    }
-
-    public FriendModel getMember(int index) {
-        return members.get(index);
+    public String getName(){
+        return name;
     }
 }

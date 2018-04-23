@@ -1,8 +1,6 @@
 package rosehulman.edu.pictochat.activity;
 
-import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -13,13 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import java.util.Random;
 
 import rosehulman.edu.pictochat.fragment.FriendsFragment;
 import rosehulman.edu.pictochat.R;
@@ -41,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    private TextView mMessageCountTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,29 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem item = menu.findItem(R.id.action_messages);
-        item.setActionView(R.layout.messages_badge);
-        RelativeLayout layout = (RelativeLayout) item.getActionView();
-        this.mMessageCountTextView = layout.findViewById(R.id.message_count_text);
-        ImageButton button = layout.findViewById(R.id.messages_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO
-                Random random = new Random();
-                mMessageCountTextView.setText(random.nextInt(10) + "");
-            }
-        });
-
-        menu.findItem(R.id.action_settings).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                return true;
-            }
-        });
-
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
