@@ -13,4 +13,8 @@
     <dimen name="friend_name_text_horizontal_margin">8dp</dimen>
     <dimen name="friends_list_item_icon_size">40dp</dimen>
     <dimen name="friends_list_height">450dp</dimen>
+    <dimen name="messages_badge_padding">5dp</dimen>
+    <dimen name="messages_icon_margin">10dp</dimen>
+    <dimen name="messages_badge_text_size">20sp</dimen>
+    <dimen name="messages_badge_right_padding">12dp</dimen>
 </resources>

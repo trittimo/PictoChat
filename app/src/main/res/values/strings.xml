@@ -27,4 +27,6 @@
     <string name="menu_icon">Options</string>
     <string name="write_icon">Send Message</string>
     <string name="add_friend_button_text">Add Friend</string>
+    <string name="messages_image_description">Messages</string>
+    <string name="default_messages_text">1</string>
 </resources>
