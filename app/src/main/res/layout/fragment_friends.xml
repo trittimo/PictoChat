@@ -24,7 +24,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_friend_button_text"
-        android:layout_alignParentBottom="true" />
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+        <requestFocus/>
+    </Button>
 
 
 </LinearLayout>
