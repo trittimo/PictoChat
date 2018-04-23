@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 import rosehulman.edu.pictochat.R;
 import rosehulman.edu.pictochat.model.FriendListItemModel;
@@ -20,6 +21,7 @@ import rosehulman.edu.pictochat.model.FriendListItemModel;
 public class FriendAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<FriendListItemModel> friends = new ArrayList<>();
+    private String filter;
 
     public FriendAdapter(Context context) {
         this.context = context;
@@ -30,12 +32,32 @@ public class FriendAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return friends.size();
+        if (filter == null) {
+            return friends.size();
+        }
+        ArrayList<FriendListItemModel> copy = new ArrayList<>(friends);
+        copy.removeIf(new Predicate<FriendListItemModel>() {
+            @Override
+            public boolean test(FriendListItemModel s) {
+                return !s.getName().toLowerCase().contains(filter) && !s.getEmail().toLowerCase().contains(filter);
+            }
+        });
+        return copy.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return friends.get(position);
+    public FriendListItemModel getItem(int position) {
+        if (filter == null) {
+            return friends.get(position);
+        }
+        ArrayList<FriendListItemModel> copy = new ArrayList<>(friends);
+        copy.removeIf(new Predicate<FriendListItemModel>() {
+            @Override
+            public boolean test(FriendListItemModel s) {
+                return !s.getName().toLowerCase().contains(filter) && !s.getEmail().toLowerCase().contains(filter);
+            }
+        });
+        return copy.get(position);
     }
 
     @Override
@@ -50,7 +72,7 @@ public class FriendAdapter extends BaseAdapter {
             view = LayoutInflater.from(context).inflate(R.layout.friends_list_item, parent, false);
         }
 
-        FriendListItemModel friend = friends.get(position);
+        FriendListItemModel friend = getItem(position);
         TextView friendNameTextView = view.findViewById(R.id.friend_name_text);
         friendNameTextView.setText(friend.getName());
 
@@ -65,7 +87,7 @@ public class FriendAdapter extends BaseAdapter {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         Toast.makeText(FriendAdapter.this.context, "Removed friend", Toast.LENGTH_SHORT).show();
-                        friends.remove(position);
+                        friends.remove(getItem(position));
                         FriendAdapter.this.notifyDataSetChanged();
 
                         // TODO: Actually remove the friend
@@ -77,5 +99,14 @@ public class FriendAdapter extends BaseAdapter {
             }
         });
         return view;
+    }
+
+    public void setFilter(String filter) {
+        if (filter.isEmpty()) {
+            this.filter = null;
+            return;
+        }
+        this.filter = filter.toLowerCase();
+        notifyDataSetChanged();
     }
 }
