@@ -1,6 +1,7 @@
 package rosehulman.edu.pictochat.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.function.Predicate;
 
 import rosehulman.edu.pictochat.R;
+import rosehulman.edu.pictochat.activity.ChatRoomActivity;
 import rosehulman.edu.pictochat.model.FriendModel;
 import rosehulman.edu.pictochat.model.RoomModel;
 
@@ -22,6 +24,7 @@ public class RoomAdapter extends BaseAdapter{
     private Context context;
     private ArrayList<RoomModel> rooms = new ArrayList<>();
     private String filter;
+    public static final String ROOM_ID_KEY = "room_id_key";
 
     public RoomAdapter(Context context) {
         this.context = context;
@@ -73,7 +76,7 @@ public class RoomAdapter extends BaseAdapter{
         }
 
         RoomModel room = getItem(position);
-        TextView roomNameTextView = view.findViewById(R.id.room_name_text);
+        final TextView roomNameTextView = view.findViewById(R.id.room_name_text);
         roomNameTextView.setText(room.getName());
 
         final ImageButton optionsMenuButton = view.findViewById(R.id.rooms_options_button);
@@ -101,6 +104,15 @@ public class RoomAdapter extends BaseAdapter{
                 });
 
                 menu.show();
+            }
+        });
+
+        roomNameTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ChatRoomActivity.class);
+                intent.putExtra(ROOM_ID_KEY, roomNameTextView.getText().toString());
+                context.startActivity(intent);
             }
         });
         return view;

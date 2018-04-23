@@ -17,4 +17,6 @@
     <dimen name="messages_icon_margin">10dp</dimen>
     <dimen name="messages_badge_text_size">20sp</dimen>
     <dimen name="messages_badge_right_padding">12dp</dimen>
+    <dimen name="text_input">300dp</dimen>
+    <dimen name="draw_text_size">12sp</dimen>
 </resources>
