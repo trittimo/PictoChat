@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="rosehulman.edu.pictochat.activity.ChatRoomActivity">
+    tools:context="rosehulman.edu.pictochat.activity.ChatRoomActivity"
+    android:background="@color/colorLightGray">
 
-    <TextView
-        android:text="Chat Dialog Goes Here"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/chat_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/chat_room_recycler_bottom_margin"/>
 
     <EditText
         android:id="@+id/chat_input"
@@ -19,6 +21,7 @@
         android:imeOptions="actionSend"
         android:inputType="textCapSentences"/>
     <Button
+        android:id="@+id/draw_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/chat_input"
