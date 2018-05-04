@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "255299702701",
+    "firebase_url": "https://pictochat-72588.firebaseio.com",
+    "project_id": "pictochat-72588",
+    "storage_bucket": "pictochat-72588.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255299702701:android:1257dcfa508845b6",
+        "android_client_info": {
+          "package_name": "rosehulman.edu.pictochat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255299702701-h5svipdan8auj5la7i62actharj1gsno.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "rosehulman.edu.pictochat",
+            "certificate_hash": "219daada328b139eadfff1b9d9f7b9ff74f7cdee"
+          }
+        },
+        {
+          "client_id": "255299702701-g1ohdil5g7u89iaou8n8itphu9ip2fec.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4WHME8oLTG7N_b2u0suXfaxY40IzTtFk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255299702701-g1ohdil5g7u89iaou8n8itphu9ip2fec.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
