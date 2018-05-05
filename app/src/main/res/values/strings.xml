@@ -112,4 +112,6 @@
     <string name="add_friend_dialog_title">Add Friend</string>
     <string name="email_address_hint">email@gmail.com</string>
     <string name="draw">Draw</string>
+
+    <string name="login_failed">Login failed</string>
 </resources>

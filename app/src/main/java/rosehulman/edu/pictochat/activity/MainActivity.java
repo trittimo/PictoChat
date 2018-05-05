@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import java.util.Random;
 import rosehulman.edu.pictochat.fragment.FriendsFragment;
 import rosehulman.edu.pictochat.R;
 import rosehulman.edu.pictochat.fragment.RoomsFragment;
+import rosehulman.edu.pictochat.util.Constants;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        Log.d(Constants.TAG, getIntent().getStringExtra(Constants.EXTRA_USER_ID));
     }
 
 
