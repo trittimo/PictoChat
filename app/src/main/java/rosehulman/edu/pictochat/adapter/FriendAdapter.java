@@ -11,22 +11,41 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
 import rosehulman.edu.pictochat.R;
 import rosehulman.edu.pictochat.model.FriendModel;
 
-public class FriendAdapter extends BaseAdapter {
+public class FriendAdapter extends BaseAdapter implements ChildEventListener {
     private Context context;
     private ArrayList<FriendModel> friends = new ArrayList<>();
     private String filter;
 
-    public FriendAdapter(Context context) {
+    private DatabaseReference mDatabaseReference;
+
+    public FriendAdapter(Context context, DatabaseReference databaseReference) {
         this.context = context;
-        for (int i = 0; i < 5; i++) {
-            friends.add(new FriendModel("John Doe " + i, "default@gmail.com"));
+        this.mDatabaseReference = databaseReference;
+    }
+
+    public void remove(String key) {
+        for (int i = 0; i < friends.size(); i++) {
+            if (friends.get(i).getKey().equals(key)) {
+                friends.remove(i);
+                return;
+            }
         }
+    }
+
+    public void add(FriendModel model) {
+        mDatabaseReference.push().setValue(model);
     }
 
     @Override
@@ -110,8 +129,37 @@ public class FriendAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void addFriend(FriendModel friend) {
+    @Override
+    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+        FriendModel friend = dataSnapshot.getValue(FriendModel.class);
+        friend.setKey(dataSnapshot.getKey());
         friends.add(friend);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+        // TODO
+    }
+
+    @Override
+    public void onChildRemoved(DataSnapshot dataSnapshot) {
+        String key = dataSnapshot.getKey();
+        remove(key);
+    }
+
+    @Override
+    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+        // Not implemented
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+        // Not implemented
+    }
+
+    public void clear() {
+        friends.clear();
     }
 }
