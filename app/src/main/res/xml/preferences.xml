@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference android:title="@string/logout">
+    <Preference
+        android:key="pref_logout"
+        android:title="@string/logout">
         <intent
             android:targetPackage="rosehulman.edu.pictochat"
             android:targetClass="rosehulman.edu.pictochat.activity.LoginActivity" />
     </Preference>
+
+    <EditTextPreference
+        android:id="@+id/display_name"
+        android:key="pref_displayName"
+        android:title="@string/display_name"
+        android:hint="@string/john_doe"
+        android:defaultValue="@string/no_name_given" />
 </PreferenceScreen>

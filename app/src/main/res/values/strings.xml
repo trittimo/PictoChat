@@ -114,4 +114,7 @@
     <string name="draw">Draw</string>
 
     <string name="login_failed">Login failed</string>
+    <string name="display_name">Display Name</string>
+    <string name="john_doe">John Doe</string>
+    <string name="no_name_given">No Name Given</string>
 </resources>

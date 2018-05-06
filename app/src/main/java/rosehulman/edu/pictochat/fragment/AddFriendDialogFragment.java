@@ -39,7 +39,8 @@ public class AddFriendDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 EditText emailEditText = view.findViewById(R.id.email_address);
-                friendAdapter.add(new FriendModel("name is", "email is"));
+                // TODO
+//                friendAdapter.add(new FriendModel("name is", "email is"));
             }
         });
 

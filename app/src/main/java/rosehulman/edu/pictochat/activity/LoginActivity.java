@@ -1,6 +1,8 @@
 package rosehulman.edu.pictochat.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import rosehulman.edu.pictochat.R;
 import rosehulman.edu.pictochat.util.Constants;
@@ -38,15 +42,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private OnCompleteListener mOnCompleteListener;
+    private SharedPreferences mPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Set up the login form.
+
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (mPreferences.contains(Constants.KEY_PREF_USER_ID)) {
+            // Skip sign-in
+            launchMainActivity();
+        }
 
         final SignInButton signInButton = findViewById(R.id.sign_in_button);
-
-
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -64,11 +73,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 if (!task.isSuccessful()) {
                     showLoginError();
                 } else {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra(Constants.EXTRA_USER_ID, mAuth.getUid());
-                    startActivity(intent);
-                    finish();
+                    addDisplayName();
+                    saveUid();
+                    launchMainActivity();
                 }
             }
         };
@@ -80,6 +87,31 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 onLogin();
             }
         });
+    }
+
+    public void launchMainActivity() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    public void saveUid() {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString(Constants.KEY_PREF_USER_ID, mAuth.getUid());
+        editor.commit();
+    }
+
+    public void addDisplayName() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String defaultDisplayName = getString(R.string.no_name_given);
+        if (preferences.getString(SettingsActivity.KEY_PREF_DISPLAY_NAME, defaultDisplayName).equals(defaultDisplayName)) {
+            FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(mAuth.getUid())
+                    .child("display_name")
+                    .setValue(mAuth.getCurrentUser().getDisplayName());
+        }
     }
 
     public void onLogin() {

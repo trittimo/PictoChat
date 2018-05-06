@@ -1,6 +1,8 @@
 package rosehulman.edu.pictochat.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
@@ -33,7 +35,8 @@ public class FriendsFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_friends, container, false);
         ListView listView = rootView.findViewById(R.id.friends_list);
 
-        this.mAuthId = getActivity().getIntent().getStringExtra(Constants.EXTRA_USER_ID);
+        this.mAuthId = PreferenceManager.getDefaultSharedPreferences(this.getContext()).getString(Constants.KEY_PREF_USER_ID, null);
+
         this.mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(this.mAuthId);
 
         this.mFriendAdapter = new FriendAdapter(inflater.getContext(), mDatabaseReference.child("friends"));
