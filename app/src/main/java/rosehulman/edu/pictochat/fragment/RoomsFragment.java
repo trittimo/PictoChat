@@ -1,20 +1,21 @@
 package rosehulman.edu.pictochat.fragment;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import rosehulman.edu.pictochat.R;
 import rosehulman.edu.pictochat.activity.MainActivity;
-import rosehulman.edu.pictochat.adapter.FriendAdapter;
 import rosehulman.edu.pictochat.adapter.RoomAdapter;
 
 public class RoomsFragment extends Fragment {
+    private static final String DIALOG_ADD_ROOM = "add_room";
+
     private RoomAdapter mRoomsAdapter;
 
     public RoomsFragment() {}
@@ -37,6 +38,16 @@ public class RoomsFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 RoomsFragment.this.mRoomsAdapter.setFilter(newText);
                 return true;
+            }
+        });
+
+        FloatingActionButton addRoomButton = rootView.findViewById(R.id.add_room_button);
+        addRoomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddRoomDialogFragment fragment = new AddRoomDialogFragment();
+                fragment.setRoomAdapter(mRoomsAdapter);
+                fragment.show(getActivity().getFragmentManager(), DIALOG_ADD_ROOM);
             }
         });
         return rootView;

@@ -1,28 +1,40 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     tools:context="rosehulman.edu.pictochat.fragment.RoomsFragment"
-    android:orientation="vertical">
-
-    <android.support.v7.widget.SearchView
-        android:id="@+id/rooms_filter"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:queryHint="@string/rooms_filter_hint"
-        app:iconifiedByDefault="false" />
+        android:layout_height="match_parent"
 
-    <ListView
-        android:id="@+id/rooms_list"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/friends_list_height" />
+        android:orientation="vertical">
 
-    <Button
+        <android.support.v7.widget.SearchView
+            android:id="@+id/rooms_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:queryHint="@string/rooms_filter_hint"
+            app:iconifiedByDefault="false" />
+
+        <ListView
+            android:id="@+id/rooms_list"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/friends_list_height" />
+
+    </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_room_button"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_room_button_text" />
-
-</LinearLayout>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@android:drawable/ic_input_add"
+        android:layout_margin="16dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+        <requestFocus />
+    </android.support.design.widget.FloatingActionButton>
+</RelativeLayout>
