@@ -99,17 +99,22 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void saveUid() {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putString(Constants.KEY_PREF_USER_ID, mAuth.getUid());
+
+        String email = mAuth.getCurrentUser().getEmail();
+
+        editor.putString(Constants.KEY_PREF_USER_EMAIL, email.substring(0, email.indexOf("@")));
         editor.commit();
     }
 
     public void addDisplayName() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String defaultDisplayName = getString(R.string.no_name_given);
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid());
         if (preferences.getString(SettingsActivity.KEY_PREF_DISPLAY_NAME, defaultDisplayName).equals(defaultDisplayName)) {
-            FirebaseDatabase.getInstance().getReference()
-                    .child("users")
-                    .child(mAuth.getUid())
-                    .child("display_name")
+            database.child("display_name").setValue(mAuth.getCurrentUser().getDisplayName());
+            database.child("email").setValue(mAuth.getCurrentUser().getEmail());
+            String email = mAuth.getCurrentUser().getEmail();
+            FirebaseDatabase.getInstance().getReference().child("user_map").child(email.substring(0, email.indexOf("@")))
                     .setValue(mAuth.getCurrentUser().getDisplayName());
         }
     }

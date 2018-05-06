@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import rosehulman.edu.pictochat.R;
@@ -76,10 +77,17 @@ public class SettingsActivity extends AppCompatActivity {
             if (key.equals(KEY_PREF_DISPLAY_NAME)) {
                 SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
                 String displayName = prefs.getString(KEY_PREF_DISPLAY_NAME, getString(R.string.no_name_given));
-                FirebaseDatabase.getInstance().getReference()
-                        .child("users")
+                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
+                database.child("users")
                         .child(prefs.getString(Constants.KEY_PREF_USER_ID, null))
                         .child("display_name")
+                        .setValue(displayName);
+
+                String email = prefs.getString(Constants.KEY_PREF_USER_EMAIL, null);
+
+                database.child("user_map")
+                        .child(prefs.getString(Constants.KEY_PREF_USER_EMAIL, null))
                         .setValue(displayName);
             }
         }

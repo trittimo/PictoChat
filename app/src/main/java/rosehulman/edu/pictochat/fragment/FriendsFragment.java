@@ -1,5 +1,6 @@
 package rosehulman.edu.pictochat.fragment;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -64,7 +67,6 @@ public class FriendsFragment extends Fragment {
                 fragment.show(getActivity().getFragmentManager(), DIALOG_ADD_FRIEND);
             }
         });
-
 
         return rootView;
     }
