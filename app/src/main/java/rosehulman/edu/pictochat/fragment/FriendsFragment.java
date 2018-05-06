@@ -1,11 +1,14 @@
 package rosehulman.edu.pictochat.fragment;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -49,7 +52,7 @@ public class FriendsFragment extends Fragment {
             }
         });
 
-        Button addFriendButton = rootView.findViewById(R.id.add_friend_button);
+        FloatingActionButton addFriendButton = rootView.findViewById(R.id.add_friend_button);
         addFriendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +61,7 @@ public class FriendsFragment extends Fragment {
                 fragment.show(getActivity().getFragmentManager(), DIALOG_ADD_FRIEND);
             }
         });
+
 
         return rootView;
     }
