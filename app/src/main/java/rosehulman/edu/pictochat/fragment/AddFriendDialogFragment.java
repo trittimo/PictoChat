@@ -5,12 +5,16 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import rosehulman.edu.pictochat.R;
 import rosehulman.edu.pictochat.adapter.FriendAdapter;
+import rosehulman.edu.pictochat.firebase.FirebaseUserMapHelper;
 import rosehulman.edu.pictochat.model.FriendModel;
 
 public class AddFriendDialogFragment extends DialogFragment {
@@ -39,15 +43,14 @@ public class AddFriendDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 EditText emailEditText = view.findViewById(R.id.email_address);
-                // TODO
-//                friendAdapter.add(new FriendModel("name is", "email is"));
+                String email = emailEditText.getText().toString();
+                friendAdapter.add(new FriendModel(email));
             }
         });
 
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Nothing to do here
             }
         });
         return builder.create();

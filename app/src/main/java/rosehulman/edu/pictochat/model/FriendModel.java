@@ -9,6 +9,10 @@ public class FriendModel {
 
     public FriendModel() {}
 
+    public FriendModel(String email) {
+        this.email = email;
+    }
+
     public FriendModel(String name, String email) {
         this.name = name;
         this.email = email;
@@ -22,6 +26,7 @@ public class FriendModel {
         this.email = email;
     }
 
+    @Exclude
     public String getName() {
         return name;
     }

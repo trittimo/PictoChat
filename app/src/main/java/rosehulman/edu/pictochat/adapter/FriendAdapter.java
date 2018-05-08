@@ -1,6 +1,8 @@
 package rosehulman.edu.pictochat.adapter;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,7 +24,10 @@ import java.util.ArrayList;
 import java.util.function.Predicate;
 
 import rosehulman.edu.pictochat.R;
+import rosehulman.edu.pictochat.firebase.FirebaseUserMapHelper;
+import rosehulman.edu.pictochat.fragment.AddFriendDialogFragment;
 import rosehulman.edu.pictochat.model.FriendModel;
+import rosehulman.edu.pictochat.util.Constants;
 
 public class FriendAdapter extends BaseAdapter implements ChildEventListener {
     private Context context;
@@ -32,19 +38,24 @@ public class FriendAdapter extends BaseAdapter implements ChildEventListener {
 
     public FriendAdapter(Context context, DatabaseReference databaseReference) {
         this.context = context;
-        this.mDatabaseReference = databaseReference;
+        this.mDatabaseReference = databaseReference.child("friends");
     }
 
     public void remove(String key) {
         for (int i = 0; i < friends.size(); i++) {
             if (friends.get(i).getKey().equals(key)) {
                 friends.remove(i);
+                notifyDataSetChanged();
                 return;
             }
         }
     }
 
-    public void add(FriendModel model) {
+    public void add(final FriendModel model) {
+        if (model.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
+            Toast.makeText(FriendAdapter.this.context, "You cannot add yourself", Toast.LENGTH_SHORT).show();
+            return;
+        }
         mDatabaseReference.push().setValue(model);
     }
 
@@ -105,10 +116,8 @@ public class FriendAdapter extends BaseAdapter implements ChildEventListener {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         Toast.makeText(FriendAdapter.this.context, "Removed friend", Toast.LENGTH_SHORT).show();
-                        friends.remove(getItem(position));
-                        FriendAdapter.this.notifyDataSetChanged();
-
-                        // TODO: Actually remove the friend
+                        FriendModel friend = getItem(position);
+                        mDatabaseReference.child(friend.getKey()).removeValue();
                         return true;
                     }
                 });
@@ -130,17 +139,28 @@ public class FriendAdapter extends BaseAdapter implements ChildEventListener {
     }
 
     @Override
-    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-        FriendModel friend = dataSnapshot.getValue(FriendModel.class);
+    public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
+        final FriendModel friend = dataSnapshot.getValue(FriendModel.class);
         friend.setKey(dataSnapshot.getKey());
-        friends.add(friend);
-        notifyDataSetChanged();
+        FirebaseUserMapHelper.addDisplayNameListener(friend.getEmail(), new FirebaseUserMapHelper.DisplayNameEventListener() {
+            @Override
+            public void onResult(String displayName) {
+                friend.setName(displayName);
+                friends.add(friend);
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(String message) {
+                Toast.makeText(FriendAdapter.this.context, message, Toast.LENGTH_SHORT).show();
+                mDatabaseReference.child(dataSnapshot.getKey()).removeValue();
+            }
+        });
     }
 
     @Override
     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-        // TODO
+        // This shouldn't be possible, so it's not implemented
     }
 
     @Override

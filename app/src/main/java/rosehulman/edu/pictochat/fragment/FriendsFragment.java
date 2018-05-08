@@ -42,7 +42,7 @@ public class FriendsFragment extends Fragment {
         this.mAuth = FirebaseAuth.getInstance();
         this.mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid());
 
-        this.mFriendAdapter = new FriendAdapter(inflater.getContext(), mDatabaseReference.child("friends"));
+        this.mFriendAdapter = new FriendAdapter(inflater.getContext(), mDatabaseReference);
         listView.setAdapter(mFriendAdapter);
         SearchView view = rootView.findViewById(R.id.friends_filter);
         view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -82,7 +82,6 @@ public class FriendsFragment extends Fragment {
     public static Fragment newInstance(MainActivity mainActivity) {
         FriendsFragment fragment = new FriendsFragment();
         Bundle args = new Bundle();
-//        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
     }
