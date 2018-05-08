@@ -2,22 +2,20 @@ package rosehulman.edu.pictochat.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import rosehulman.edu.pictochat.R;
-import rosehulman.edu.pictochat.util.Constants;
+import rosehulman.edu.pictochat.firebase.FirebaseKeyHelper;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -63,31 +61,27 @@ public class SettingsActivity extends AppCompatActivity {
             logout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SettingsFragment.this.getContext());
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.remove(Constants.KEY_PREF_USER_ID);
-                    editor.commit();
+                    FirebaseAuth.getInstance().signOut();
+
+                    // Return false is intentional here: more processing needs to happen to
+                    // start the login activity
                     return false;
                 }
             });
         }
+
+
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals(KEY_PREF_DISPLAY_NAME)) {
                 SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
                 String displayName = prefs.getString(KEY_PREF_DISPLAY_NAME, getString(R.string.no_name_given));
+                FirebaseAuth auth = FirebaseAuth.getInstance();
                 DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
-                database.child("users")
-                        .child(prefs.getString(Constants.KEY_PREF_USER_ID, null))
-                        .child("display_name")
-                        .setValue(displayName);
-
-                String email = prefs.getString(Constants.KEY_PREF_USER_EMAIL, null);
-
                 database.child("user_map")
-                        .child(prefs.getString(Constants.KEY_PREF_USER_EMAIL, null))
+                        .child(FirebaseKeyHelper.stringToKey(auth.getCurrentUser().getEmail()))
                         .setValue(displayName);
             }
         }

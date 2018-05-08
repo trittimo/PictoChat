@@ -1,3 +1,7 @@
+# Intellij
+.idea/*
+!.idea/runConfigurations.xml
+
 
 # Created by https://www.gitignore.io/api/java,android,intellij,androidstudio
 
@@ -38,11 +42,6 @@ captures/
 
 # Intellij
 *.iml
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/gradle.xml
-.idea/dictionaries
-.idea/libraries
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild

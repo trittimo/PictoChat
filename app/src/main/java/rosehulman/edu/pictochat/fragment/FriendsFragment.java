@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,8 +30,8 @@ import rosehulman.edu.pictochat.util.Constants;
 public class FriendsFragment extends Fragment {
     private static final String DIALOG_ADD_FRIEND = "add_friend";
     private FriendAdapter mFriendAdapter;
-    private String mAuthId;
     private DatabaseReference mDatabaseReference;
+    private FirebaseAuth mAuth;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -38,9 +39,8 @@ public class FriendsFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_friends, container, false);
         ListView listView = rootView.findViewById(R.id.friends_list);
 
-        this.mAuthId = PreferenceManager.getDefaultSharedPreferences(this.getContext()).getString(Constants.KEY_PREF_USER_ID, null);
-
-        this.mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(this.mAuthId);
+        this.mAuth = FirebaseAuth.getInstance();
+        this.mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getUid());
 
         this.mFriendAdapter = new FriendAdapter(inflater.getContext(), mDatabaseReference.child("friends"));
         listView.setAdapter(mFriendAdapter);
