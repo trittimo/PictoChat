@@ -1,33 +1,37 @@
 package rosehulman.edu.pictochat.model;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 
 public class RoomModel {
-    private String name;
-    private ArrayList<FriendModel> members;
-    public RoomModel() {
-        this.name = "Default Name";
-        this.members = new ArrayList<>();
-        members.add(new FriendModel());
+    private String title;
+    private String id;
+    private ArrayList<FriendModel> users;
+
+    public RoomModel() {}
+
+    public String getTitle() {
+        return title;
     }
 
-    public String getName() {
-        return name;
+    public void setTitle(String name) {
+        this.title = name;
+    }
+    public ArrayList<FriendModel> getUsers() {
+        return users;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsers(ArrayList<FriendModel> users) {
+        this.users = users;
     }
 
-    public int getMemberCount() {
-        return members.size();
+    @Exclude
+    public String getId() {
+        return id;
     }
 
-    public void addMember(FriendModel member) {
-        members.add(member);
-    }
-
-    public FriendModel getMember(int index) {
-        return members.get(index);
+    public void setId(String id) {
+        this.id = id;
     }
 }

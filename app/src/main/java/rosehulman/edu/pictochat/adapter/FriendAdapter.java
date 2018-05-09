@@ -167,6 +167,7 @@ public class FriendAdapter extends BaseAdapter implements ChildEventListener {
     public void onChildRemoved(DataSnapshot dataSnapshot) {
         String key = dataSnapshot.getKey();
         remove(key);
+        notifyDataSetChanged();
     }
 
     @Override

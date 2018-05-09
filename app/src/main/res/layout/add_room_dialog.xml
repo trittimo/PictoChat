@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <EditText
-        android:id="@+id/room_name"
+        android:id="@+id/room_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/my_room"/>

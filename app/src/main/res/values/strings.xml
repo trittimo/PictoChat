@@ -119,5 +119,5 @@
     <string name="no_name_given">No Name Given</string>
     <string name="add_room_dialog_title">Add Room</string>
     <string name="unique_room_name">Unique Room Name</string>
-    <string name="my_room">My Room</string>
+    <string name="my_room">Room Title</string>
 </resources>

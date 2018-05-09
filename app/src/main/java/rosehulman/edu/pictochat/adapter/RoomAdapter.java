@@ -12,25 +12,49 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
 import rosehulman.edu.pictochat.R;
 import rosehulman.edu.pictochat.activity.ChatRoomActivity;
-import rosehulman.edu.pictochat.model.FriendModel;
 import rosehulman.edu.pictochat.model.RoomModel;
 
-public class RoomAdapter extends BaseAdapter{
+public class RoomAdapter extends BaseAdapter implements ChildEventListener{
     private Context context;
     private ArrayList<RoomModel> rooms = new ArrayList<>();
     private String filter;
     public static final String ROOM_ID_KEY = "room_id_key";
+    private DatabaseReference mDatabaseReference;
 
-    public RoomAdapter(Context context) {
+    public RoomAdapter(Context context, DatabaseReference databaseReference) {
         this.context = context;
-        for (int i = 0; i < 5; i++) {
-            rooms.add(new RoomModel());
+        this.mDatabaseReference = databaseReference;
+    }
+
+    public void remove(String id) {
+        for (int i =0; i < rooms.size(); i++) {
+            if (rooms.get(i).getId().equals(id)) {
+                rooms.remove(i);
+                notifyDataSetChanged();
+                return;
+            }
         }
+    }
+
+    public void add(RoomModel model) {
+        DatabaseReference userRooms = mDatabaseReference
+                .child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("rooms");
+        DatabaseReference allRooms = mDatabaseReference.child("rooms");
+        allRooms.child(model.getId()).setValue(model);
+        userRooms.child(model.getId()).setValue(model.getTitle());
     }
 
     @Override
@@ -42,7 +66,7 @@ public class RoomAdapter extends BaseAdapter{
         copy.removeIf(new Predicate<RoomModel>() {
             @Override
             public boolean test(RoomModel s) {
-                return !s.getName().toLowerCase().contains(filter);
+                return !s.getTitle().toLowerCase().contains(filter);
             }
         });
         return copy.size();
@@ -57,7 +81,7 @@ public class RoomAdapter extends BaseAdapter{
         copy.removeIf(new Predicate<RoomModel>() {
             @Override
             public boolean test(RoomModel s) {
-                return !s.getName().toLowerCase().contains(filter);
+                return !s.getTitle().toLowerCase().contains(filter);
             }
         });
         return copy.get(position);
@@ -77,7 +101,7 @@ public class RoomAdapter extends BaseAdapter{
 
         RoomModel room = getItem(position);
         final TextView roomNameTextView = view.findViewById(R.id.room_name_text);
-        roomNameTextView.setText(room.getName());
+        roomNameTextView.setText(room.getTitle());
 
         final ImageButton optionsMenuButton = view.findViewById(R.id.rooms_options_button);
         optionsMenuButton.setOnClickListener(new View.OnClickListener() {
@@ -91,8 +115,14 @@ public class RoomAdapter extends BaseAdapter{
                         switch (item.getItemId()) {
                             case R.id.remove_room:
                                 Toast.makeText(RoomAdapter.this.context, "Removed room", Toast.LENGTH_SHORT).show();
-                                rooms.remove(getItem(position));
-                                RoomAdapter.this.notifyDataSetChanged();
+                                RoomModel room = getItem(position);
+                                mDatabaseReference
+                                        .child("users")
+                                        .child(FirebaseAuth.getInstance().getUid())
+                                        .child("rooms")
+                                        .child(room.getId())
+                                        .removeValue();
+
                                 return true;
                             case R.id.edit_room:
                                 // TODO
@@ -126,5 +156,40 @@ public class RoomAdapter extends BaseAdapter{
         }
         this.filter = filter;
         notifyDataSetChanged();
+    }
+
+
+    @Override
+    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+        RoomModel model = new RoomModel();
+        model.setId(dataSnapshot.getKey());
+        model.setTitle(dataSnapshot.getValue().toString());
+        rooms.add(model);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+        // Not implemented
+    }
+
+    @Override
+    public void onChildRemoved(DataSnapshot dataSnapshot) {
+        remove(dataSnapshot.getKey());
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+        // Not implemented
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+        // Not implemented
+    }
+
+    public void clear() {
+        rooms.clear();
     }
 }
