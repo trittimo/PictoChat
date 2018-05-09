@@ -56,7 +56,6 @@ public class RoomsFragment extends Fragment {
     public static Fragment newInstance(MainActivity mainActivity) {
         RoomsFragment fragment = new RoomsFragment();
         Bundle args = new Bundle();
-//        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
     }
