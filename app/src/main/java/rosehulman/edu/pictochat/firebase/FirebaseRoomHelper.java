@@ -33,21 +33,75 @@ public class FirebaseRoomHelper {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    Toast.makeText(mContext, "That room already exists", Toast.LENGTH_SHORT).show();
-                    return;
+                    boolean exists = false;
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        if (child.getKey().equals("users")) {
+                            for (DataSnapshot user : child.getChildren()) {
+                                String email = FirebaseKeyHelper.stringToKey(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                                if (user.getKey().equals(email)) {
+                                    exists = true;
+                                    break;
+                                }
+                            }
+
+                            if (!exists) {
+                                Toast.makeText(mContext, "You cannot join that room", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+                    }
+
                 }
 
-                String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
-                room.child("title").setValue(roomTitle);
-                room.child("users").child(FirebaseKeyHelper.stringToKey(email)).setValue(true);
 
-                FirebaseDatabase.getInstance().getReference()
-                        .child("users")
-                        .child(FirebaseAuth.getInstance().getUid())
-                        .child("rooms")
-                        .child(roomId)
-                        .setValue(roomTitle);
+                room.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            FirebaseDatabase.getInstance().getReference()
+                                    .child("rooms")
+                                    .child(roomId)
+                                    .child("title")
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            FirebaseDatabase.getInstance().getReference()
+                                                    .child("users")
+                                                    .child(FirebaseAuth.getInstance().getUid())
+                                                    .child("rooms")
+                                                    .child(roomId)
+                                                    .setValue(dataSnapshot.getValue());
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                        } else {
+                            String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                            room.child("title").setValue(roomTitle);
+                            room.child("users").child(FirebaseKeyHelper.stringToKey(email)).setValue(true);
+
+                            FirebaseDatabase.getInstance().getReference()
+                                    .child("users")
+                                    .child(FirebaseAuth.getInstance().getUid())
+                                    .child("rooms")
+                                    .child(roomId)
+                                    .setValue(roomTitle);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
             }
 
             @Override

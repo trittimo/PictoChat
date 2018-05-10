@@ -26,10 +26,12 @@ import rosehulman.edu.pictochat.activity.ChatRoomActivity;
 import rosehulman.edu.pictochat.model.RoomModel;
 
 public class RoomAdapter extends BaseAdapter implements ChildEventListener{
+    public static final String ROOM_NAME_KEY = "room_name_key";
+    public static final String ROOM_ID_KEY = "room_id_key";
+
     private Context context;
     private ArrayList<RoomModel> rooms = new ArrayList<>();
     private String filter;
-    public static final String ROOM_ID_KEY = "room_id_key";
     private DatabaseReference mDatabaseReference;
 
     public RoomAdapter(Context context, DatabaseReference databaseReference) {
@@ -141,7 +143,8 @@ public class RoomAdapter extends BaseAdapter implements ChildEventListener{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ChatRoomActivity.class);
-                intent.putExtra(ROOM_ID_KEY, roomNameTextView.getText().toString());
+                intent.putExtra(ROOM_NAME_KEY, getItem(position).getTitle());
+                intent.putExtra(ROOM_ID_KEY, getItem(position).getId());
                 context.startActivity(intent);
             }
         });

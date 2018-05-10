@@ -33,6 +33,7 @@
         android:layout_alignParentRight="true"
         android:src="@android:drawable/ic_input_add"
         android:layout_margin="16dp"
+        android:tint="@color/white"
         android:focusable="true"
         android:focusableInTouchMode="true">
         <requestFocus />
