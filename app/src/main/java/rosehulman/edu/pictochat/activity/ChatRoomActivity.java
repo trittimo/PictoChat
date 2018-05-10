@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import rosehulman.edu.pictochat.R;
@@ -29,6 +32,7 @@ import rosehulman.edu.pictochat.adapter.ChatAdapter;
 import rosehulman.edu.pictochat.adapter.RoomAdapter;
 import rosehulman.edu.pictochat.firebase.FirebaseKeyHelper;
 import rosehulman.edu.pictochat.model.FriendModel;
+import rosehulman.edu.pictochat.model.MessageModel;
 import rosehulman.edu.pictochat.view.CanvasView;
 
 public class ChatRoomActivity extends AppCompatActivity {
@@ -52,7 +56,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         this.mLayoutManager = new LinearLayoutManager(this);
         chatRecyclerView.setLayoutManager(mLayoutManager);
 
-        this.mChatAdapter = new ChatAdapter();
+        this.mChatAdapter = new ChatAdapter(roomId, mLayoutManager);
         chatRecyclerView.setAdapter(mChatAdapter);
 
         Button drawButton = findViewById(R.id.draw_button);
@@ -68,14 +72,25 @@ public class ChatRoomActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         CanvasView canvas = view.findViewById(R.id.canvas_view);
                         Bitmap bitmap = canvas.getBitmap();
-                        mChatAdapter.addMessage(bitmap);
-                        mLayoutManager.scrollToPosition(mChatAdapter.getItemCount() - 1);
+
+                        mChatAdapter.add(bitmap);
                     }
                 });
 
                 builder.create().show();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mChatAdapter.clear();
+        FirebaseDatabase.getInstance().getReference()
+                .child("rooms")
+                .child(roomId)
+                .child("messages")
+                .addChildEventListener(mChatAdapter);
     }
 
     @Override
