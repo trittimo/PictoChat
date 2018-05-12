@@ -2,6 +2,7 @@ package rosehulman.edu.pictochat.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,8 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
@@ -25,7 +28,7 @@ import rosehulman.edu.pictochat.R;
 import rosehulman.edu.pictochat.activity.ChatRoomActivity;
 import rosehulman.edu.pictochat.model.RoomModel;
 
-public class RoomAdapter extends BaseAdapter implements ChildEventListener{
+public class RoomAdapter extends BaseAdapter implements ChildEventListener {
     public static final String ROOM_NAME_KEY = "room_name_key";
     public static final String ROOM_ID_KEY = "room_id_key";
 
@@ -74,6 +77,34 @@ public class RoomAdapter extends BaseAdapter implements ChildEventListener{
         return copy.size();
     }
 
+    public void checkLastMessage() {
+        for (int i = 0; i < rooms.size(); i++) {
+            final RoomModel room = rooms.get(i);
+            final int j = i;
+            FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(FirebaseAuth.getInstance().getUid())
+                    .child("lastMessage")
+                    .child(room.getId())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists() && dataSnapshot.getValue(Long.class) < room.getLastMessage()) {
+                                room.setBold(true);
+                            } else {
+                                room.setBold(false);
+                            }
+                            notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+        }
+    }
+
     @Override
     public RoomModel getItem(int position) {
         if (filter == null) {
@@ -104,6 +135,12 @@ public class RoomAdapter extends BaseAdapter implements ChildEventListener{
         RoomModel room = getItem(position);
         final TextView roomNameTextView = view.findViewById(R.id.room_name_text);
         roomNameTextView.setText(room.getTitle());
+
+        if (room.isBold()) {
+            roomNameTextView.setTypeface(null, Typeface.BOLD);
+        } else {
+            roomNameTextView.setTypeface(null, Typeface.NORMAL);
+        }
 
         final ImageButton optionsMenuButton = view.findViewById(R.id.rooms_options_button);
         optionsMenuButton.setOnClickListener(new View.OnClickListener() {

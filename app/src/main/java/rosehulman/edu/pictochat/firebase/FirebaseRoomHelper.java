@@ -19,11 +19,9 @@ import rosehulman.edu.pictochat.model.RoomModel;
 public class FirebaseRoomHelper {
     private Context mContext;
     private DatabaseReference mDatabase;
-    private AddRoomCallback mCallback;
-    public FirebaseRoomHelper(Context context, AddRoomCallback callback) {
+    public FirebaseRoomHelper(Context context) {
         this.mContext = context;
         this.mDatabase = FirebaseDatabase.getInstance().getReference().child("rooms");
-        this.mCallback = callback;
     }
 
     public void createRoom(final String roomTitle, final String roomId) {
@@ -50,10 +48,7 @@ public class FirebaseRoomHelper {
                             }
                         }
                     }
-
                 }
-
-
 
                 room.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -98,10 +93,6 @@ public class FirebaseRoomHelper {
 
                     }
                 });
-
-
-
-
             }
 
             @Override
@@ -109,9 +100,5 @@ public class FirebaseRoomHelper {
                 Toast.makeText(mContext, "Database error", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public interface AddRoomCallback {
-        void onRoomAdded(RoomModel room);
     }
 }

@@ -21,7 +21,7 @@
     <dimen name="draw_text_size">12sp</dimen>
     <dimen name="canvas_view_height">300dp</dimen>
     <dimen name="card_corner_radius">10dp</dimen>
-    <dimen name="card_bottom_margin">10dp</dimen>
+    <dimen name="card_bottom_margin">5dp</dimen>
     <dimen name="chat_image_padding">15dp</dimen>
     <dimen name="chat_room_recycler_bottom_margin">55dp</dimen>
 </resources>

@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -50,7 +52,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.imageView.setImageBitmap(mMessages.get(holder.getAdapterPosition()).getBitmap());
+        MessageModel message = mMessages.get(holder.getAdapterPosition());
+        holder.imageView.setImageBitmap(message.getBitmap());
+        holder.sender.setText(message.getFrom());
     }
 
     @Override
@@ -60,6 +64,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
         mMessages.add(message);
         notifyDataSetChanged();
         mLayoutManager.scrollToPosition(getItemCount() - 1);
+
+        FirebaseDatabase.getInstance().getReference()
+                .child("users")
+                .child(FirebaseAuth.getInstance().getUid())
+                .child("lastViewed")
+                .child(mRoomId)
+                .setValue(System.currentTimeMillis());
     }
 
     @Override
@@ -89,10 +100,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView imageView;
+        public TextView sender;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.imageView = itemView.findViewById(R.id.chat_image_view);
+            this.sender = itemView.findViewById(R.id.sender);
         }
     }
 
@@ -101,12 +114,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
         model.setBase64Bitmap(message);
         model.setFrom(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
-        FirebaseDatabase.getInstance().getReference()
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
                 .child("rooms")
-                .child(mRoomId)
-                .child("messages")
+                .child(mRoomId);
+
+        ref.child("messages")
                 .push()
                 .setValue(model);
 
+        ref.child("lastMessage")
+                .setValue(System.currentTimeMillis());
     }
 }

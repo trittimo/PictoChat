@@ -71,6 +71,7 @@ public class RoomsFragment extends Fragment {
                 .child(FirebaseAuth.getInstance().getUid())
                 .child("rooms")
                 .addChildEventListener(mRoomsAdapter);
+        mRoomsAdapter.checkLastMessage();
     }
 
     public static Fragment newInstance(MainActivity mainActivity) {
