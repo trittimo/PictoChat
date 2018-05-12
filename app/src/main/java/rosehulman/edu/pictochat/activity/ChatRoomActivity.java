@@ -106,12 +106,19 @@ public class ChatRoomActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        AlertDialog.Builder builder;
         switch (item.getItemId()) {
             case R.id.action_settings:
                 startActivity(new Intent(ChatRoomActivity.this, SettingsActivity.class));
                 return true;
+            case R.id.action_info:
+                builder = new AlertDialog.Builder(this);
+                builder.setTitle("Room Information");
+                builder.setMessage("Room ID: " + roomId);
+                builder.show();
+                return true;
             case R.id.action_add_user:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder = new AlertDialog.Builder(this);
                 final View view = getLayoutInflater().inflate(R.layout.dialog_add_user, null);
                 builder.setView(view);
 

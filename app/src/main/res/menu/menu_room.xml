@@ -3,13 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="rosehulman.edu.pictochat.activity.MainActivity">
     <item
+        android:id="@+id/action_info"
+        android:orderInCategory="1"
+        android:title="@string/room_info"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_dialog_info"
+        />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_add_user"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:title="@string/add_user"
         app:showAsAction="ifRoom"
         android:icon="@android:drawable/ic_input_add" />

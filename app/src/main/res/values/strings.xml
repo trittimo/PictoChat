@@ -123,4 +123,5 @@
     <string name="unique_room_name">Unique Room Name</string>
     <string name="my_room">Room Title</string>
     <string name="add_user">Add User</string>
+    <string name="room_info">Room Info</string>
 </resources>

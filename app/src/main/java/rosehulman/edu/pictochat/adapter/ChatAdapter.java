@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -64,6 +65,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
         mMessages.add(message);
         notifyDataSetChanged();
         mLayoutManager.scrollToPosition(getItemCount() - 1);
+
+        FirebaseDatabase.getInstance().getReference()
+                .child("users")
+                .child(FirebaseAuth.getInstance().getUid())
+                .child("lastViewed")
+                .child(mRoomId)
+                .setValue(System.currentTimeMillis());
     }
 
     @Override
@@ -95,6 +103,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
         public ImageView imageView;
         public TextView fromTextView;
         public TextView contentTextView;
+        public TextView sender;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -110,12 +119,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
         model.setContent(content);
         model.setFrom(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
-        FirebaseDatabase.getInstance().getReference()
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
                 .child("rooms")
-                .child(mRoomId)
-                .child("messages")
+                .child(mRoomId);
+
+        ref.child("messages")
                 .push()
                 .setValue(model);
 
+        ref.child("lastMessage")
+                .setValue(System.currentTimeMillis());
     }
 }

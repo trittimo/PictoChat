@@ -19,7 +19,7 @@ import rosehulman.edu.pictochat.adapter.RoomAdapter;
 import rosehulman.edu.pictochat.firebase.FirebaseRoomHelper;
 import rosehulman.edu.pictochat.model.RoomModel;
 
-public class AddRoomDialogFragment extends DialogFragment implements  FirebaseRoomHelper.AddRoomCallback {
+public class AddRoomDialogFragment extends DialogFragment {
     private RoomAdapter roomAdapter;
 
     @Override
@@ -42,7 +42,7 @@ public class AddRoomDialogFragment extends DialogFragment implements  FirebaseRo
 
 
 
-        final FirebaseRoomHelper roomHelper = new FirebaseRoomHelper(getActivity(), this);
+        final FirebaseRoomHelper roomHelper = new FirebaseRoomHelper(getActivity());
 
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
@@ -61,10 +61,5 @@ public class AddRoomDialogFragment extends DialogFragment implements  FirebaseRo
             }
         });
         return builder.create();
-    }
-
-    @Override
-    public void onRoomAdded(RoomModel room) {
-
     }
 }

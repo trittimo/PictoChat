@@ -7,7 +7,8 @@ import java.util.ArrayList;
 public class RoomModel {
     private String title;
     private String id;
-    private ArrayList<FriendModel> users;
+    private long lastMessage;
+    private boolean isBold;
 
     public RoomModel() {}
 
@@ -18,13 +19,6 @@ public class RoomModel {
     public void setTitle(String name) {
         this.title = name;
     }
-    public ArrayList<FriendModel> getUsers() {
-        return users;
-    }
-
-    public void setUsers(ArrayList<FriendModel> users) {
-        this.users = users;
-    }
 
     @Exclude
     public String getId() {
@@ -33,5 +27,22 @@ public class RoomModel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public long getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(long lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    @Exclude
+    public boolean isBold() {
+        return isBold;
+    }
+
+    public void setBold(boolean bold) {
+        isBold = bold;
     }
 }
