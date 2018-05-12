@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +41,7 @@ public class ChatRoomActivity extends AppCompatActivity {
     private ChatAdapter mChatAdapter;
     private LinearLayoutManager mLayoutManager;
     private String roomId;
+    private EditText mEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,8 @@ public class ChatRoomActivity extends AppCompatActivity {
         this.mChatAdapter = new ChatAdapter(roomId, mLayoutManager);
         chatRecyclerView.setAdapter(mChatAdapter);
 
+        this.mEditText = findViewById(R.id.chat_input);
+
         Button drawButton = findViewById(R.id.draw_button);
         drawButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +76,8 @@ public class ChatRoomActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         CanvasView canvas = view.findViewById(R.id.canvas_view);
                         Bitmap bitmap = canvas.getBitmap();
-
-                        mChatAdapter.add(bitmap);
+                        mChatAdapter.add(bitmap, mEditText.getText().toString());
+                        mEditText.clearComposingText();
                     }
                 });
 

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -51,6 +52,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.imageView.setImageBitmap(mMessages.get(holder.getAdapterPosition()).getBitmap());
+        String fromEmail = mMessages.get(holder.getAdapterPosition()).getFrom();
+        holder.fromTextView.setText(fromEmail);
+        holder.contentTextView.setText(mMessages.get(holder.getAdapterPosition()).getContent());
     }
 
     @Override
@@ -89,16 +93,21 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> im
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView imageView;
+        public TextView fromTextView;
+        public TextView contentTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.imageView = itemView.findViewById(R.id.chat_image_view);
+            this.fromTextView = itemView.findViewById(R.id.message_from);
+            this.contentTextView = itemView.findViewById(R.id.message_content);
         }
     }
 
-    public void add(Bitmap message) {
+    public void add(Bitmap message, String content) {
         MessageModel model = new MessageModel();
         model.setBase64Bitmap(message);
+        model.setContent(content);
         model.setFrom(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         FirebaseDatabase.getInstance().getReference()

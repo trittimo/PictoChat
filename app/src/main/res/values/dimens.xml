@@ -24,4 +24,6 @@
     <dimen name="card_bottom_margin">10dp</dimen>
     <dimen name="chat_image_padding">15dp</dimen>
     <dimen name="chat_room_recycler_bottom_margin">55dp</dimen>
+    <dimen name="message_user_text_size">20sp</dimen>
+    <dimen name="message_content_text_size">14sp</dimen>
 </resources>

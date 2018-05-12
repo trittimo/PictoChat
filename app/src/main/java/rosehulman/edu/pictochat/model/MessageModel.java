@@ -12,6 +12,7 @@ public class MessageModel {
     private String base64Bitmap;
     private String from;
     private String time;
+    private String content;
     private String key;
 
     public MessageModel() {}
@@ -61,4 +62,8 @@ public class MessageModel {
     public void setKey(String key) {
         this.key = key;
     }
+
+    public void setContent(String content){this.content = content;}
+
+    public String getContent(){return content;}
 }
